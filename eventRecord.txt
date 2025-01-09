@@ -1,0 +1,3 @@
+Journal de l'aventure de robert
+Santé restante : -11
+Force : 10

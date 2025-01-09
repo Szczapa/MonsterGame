@@ -1,0 +1,10 @@
+Gobelin, 35, 5
+Orc, 80, 12
+Troll, 120, 18
+Dragon, 250, 30
+Squelette, 40, 7
+Golem, 200, 25
+Vampire, 90, 15
+Loup-Garou, 110, 20
+Démon, 300, 35
+Spectre, 50, 10
