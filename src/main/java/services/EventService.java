@@ -22,7 +22,7 @@ public class EventService {
 
     public int simulateEventImpact() {
         Random random = new Random();
-        return random.nextInt(20) + 1;
+        return random.nextInt(5) + 1;
     }
 
     private List<String> readEvents() throws IOException {
@@ -36,11 +36,10 @@ public class EventService {
         return events;
     }
 
-    public void generateJournal(Character character) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(JOURNAL_FILE))) {
-            writer.write("Journal de l'aventure de " + character.getName() + "\n");
-            writer.write("Santé restante : " + character.getPv() + "\n");
-            writer.write("Force : " + character.getForce() + "\n");
+    public void generateJournal(String events, int damages) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(JOURNAL_FILE, true))) {
+            writer.write( events +"\n");
+            writer.write(damages +"\n");
         }
     }
 }

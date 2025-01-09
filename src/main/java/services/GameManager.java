@@ -30,20 +30,17 @@ public class GameManager {
             }
         }
 
-        // Boucle principale du jeu
         boolean gameOver = false;
         while (!gameOver) {
             String event = eventService.generateEvent();
             System.out.println("Événement : " + event);
 
             int damage = eventService.simulateEventImpact();
+            eventService.generateJournal(event,damage);
             gameOver = !characterService.updateCharacter(playerCharacter, damage);
 
             System.out.println("Santé restante : " + playerCharacter.getPv());
         }
-
-        characterService.saveCharacter(playerCharacter);
-        eventService.generateJournal(playerCharacter);
         System.out.println("--- Fin de l'aventure ---");
     }
 

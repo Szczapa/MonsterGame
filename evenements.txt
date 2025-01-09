@@ -1,10 +1,10 @@
-Un trésor caché a été découvert ! Vous gagnez une récompense.
-Une embuscade surprise ! Un groupe de gobelins attaque.
-Un marchand mystérieux apparaît et propose des objets rares.
-Un portail magique s'ouvre, transportant le joueur ailleurs.
-Une pluie de météores s'abat sur la zone, infligeant des dégâts à tout le monde.
-Un allié inattendu arrive pour vous aider au combat.
-Une tempête magique modifie aléatoirement les compétences des combattants.
-Un piège ancien s'active, réduisant vos points de vie.
-Un artefact maudit est trouvé, offrant un grand pouvoir mais un coût élevé.
-Une bête légendaire surgit, forçant les joueurs à combattre ou fuir.
+Un trésor caché a été découvert ! Vous gagnez une récompense, true
+Une embuscade surprise ! Un groupe de gobelins attaque, false
+Un marchand mystérieux apparaît et propose des objets rares, random
+Un portail magique s'ouvre, transportant le joueur ailleurs,  random
+Une pluie de météores s'abat sur la zone, infligeant des dégâts à tout le monde, false
+Un allié inattendu arrive pour vous aider au combat, true
+Une tempête magique modifie aléatoirement les compétences des combattants, random
+Un piège ancien s'active, réduisant vos points de vie, false
+Un artefact maudit est trouvé, offrant un grand pouvoir mais un coût élevé, false
+Une bête légendaire surgit, forçant les joueurs à combattre ou fuir, false
