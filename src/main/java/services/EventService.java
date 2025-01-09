@@ -11,8 +11,8 @@ public class EventService {
     private static final String EVENTS_FILE = "evenements.txt";
     private static final String JOURNAL_FILE = "eventRecord.txt";
 
-    public String generateEvent() throws IOException {
-        List<String> events = readEvents();
+    public String[] generateEvent() throws IOException {
+        List<String[]> events = readEvents();
         if (events.isEmpty()) {
             throw new IOException("Le fichier des événements est vide ou introuvable.");
         }
@@ -20,17 +20,28 @@ public class EventService {
         return events.get(random.nextInt(events.size()));
     }
 
-    public int simulateEventImpact() {
+
+    public int simulateEventImpact(String status) {
         Random random = new Random();
-        return random.nextInt(5) + 1;
+        return switch (status) {
+            case "false" -> -(random.nextInt(5) + 1);
+            case "true" -> random.nextInt(5) + 1;
+            case "random" -> random.nextBoolean() ? simulateEventImpact("false") : simulateEventImpact("true");
+            default -> throw new IllegalArgumentException("Statut inconnu: " + status);
+        };
     }
 
-    private List<String> readEvents() throws IOException {
-        List<String> events = new ArrayList<>();
+
+    public List<String[]> readEvents() throws IOException {
+        List<String[]> events = new ArrayList<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader(EVENTS_FILE))) {
             String line;
             while ((line = br.readLine()) != null) {
-                events.add(line);
+                String[] parts = line.split(", ");
+                if (parts.length == 2) {
+                    events.add(parts);
+                }
             }
         }
         return events;
@@ -41,5 +52,10 @@ public class EventService {
             writer.write( events +"\n");
             writer.write(damages +"\n");
         }
+    }
+
+    public String extractEventStatus(String eventLine) {
+        String[] parts = eventLine.split(",");
+        return parts[parts.length - 1].trim();
     }
 }

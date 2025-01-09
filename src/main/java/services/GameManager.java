@@ -2,6 +2,8 @@ package services;
 
 import models.Character;
 import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class GameManager {
@@ -31,17 +33,64 @@ public class GameManager {
         }
 
         boolean gameOver = false;
+        Random random = new Random();
+
         while (!gameOver) {
-            String event = eventService.generateEvent();
-            System.out.println("Événement : " + event);
+            if (random.nextBoolean()) {
+                gameOver = fight(playerCharacter);
+            } else {
+                String[] eventData = eventService.generateEvent();
+                String event = eventData[0];
+                String status = eventData[1];
 
-            int damage = eventService.simulateEventImpact();
-            eventService.generateJournal(event,damage);
-            gameOver = !characterService.updateCharacter(playerCharacter, damage);
+                System.out.println("\nÉvénement \uD83E\uDD28: " + event);
 
-            System.out.println("Santé restante : " + playerCharacter.getPv());
+                int impact = eventService.simulateEventImpact(status);
+                eventService.generateJournal(event, impact);
+
+                gameOver = !characterService.updateCharacter(playerCharacter, impact);
+
+                System.out.println("Santé restante : " + playerCharacter.getPv()+"❤\uFE0F");
+            }
         }
-        System.out.println("--- Fin de l'aventure ---");
+        System.out.println("--- Fin de l'aventure \uD83D\uDC94 ---");
+    }
+
+    private boolean fight(Character playerCharacter) throws IOException {
+        List<Character> monsters = characterService.loadMonsters();
+        if (monsters.isEmpty()) {
+            System.out.println("Aucun monstre trouvé !");
+            return false;
+        }
+
+        Random random = new Random();
+        Character monster = monsters.get(random.nextInt(monsters.size()));
+
+        System.out.println("\n⚔️ Un " + monster.getName() + " apparaît ! Il a " + monster.getPv() + " PV et " + monster.getForce() + " de force !\n");
+
+        while (playerCharacter.getPv() > 0 && monster.getPv() > 0) {
+            int playerAttack = random.nextInt(10) + 5;
+            monster.setPv(monster.getPv() - playerAttack);
+            System.out.println("🗡️ Vous attaquez le " + monster.getName() + " et lui infligez " + playerAttack + " dégâts !");
+
+            if (monster.getPv() <= 0) {
+                System.out.println("🏆 Vous avez vaincu le " + monster.getName() + " !");
+                return false;
+            }
+
+            int monsterAttack = monster.getForce();
+            playerCharacter.setPv(playerCharacter.getPv() - monsterAttack);
+            System.out.println("💀 Le " + monster.getName() + " vous attaque et inflige " + monsterAttack + " dégâts !");
+
+            if (playerCharacter.getPv() <= 0) {
+                System.out.println("☠️ Vous avez été tué par le " + monster.getName() + "...\n");
+                return true;
+            }
+
+            System.out.println("❤️ Santé restante : " + playerCharacter.getPv()+"\n");
+        }
+
+        return false;
     }
 
 }

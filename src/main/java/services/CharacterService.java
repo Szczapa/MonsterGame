@@ -3,10 +3,13 @@ package services;
 import models.Character;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CharacterService {
     private static final String CHARACTER_FILE = "characters.dat";
+    private static final String MONSTER_FILE = "monstres.txt";
 
     public Character createCharacter(Scanner scanner) throws IOException {
         System.out.print("Entrez le nom de votre héros : ");
@@ -47,9 +50,34 @@ public class CharacterService {
     }
 
 
-    public boolean updateCharacter(Character character, int damage) {
-        int updatedHealth = character.getPv() - damage;
-        character.setPv(updatedHealth);
+    public boolean updateCharacter(Character character, int impact) {
+        if (impact>0){
+            System.out.println("Pv rendu " +impact+"❤\uFE0F");
+        } else {
+            System.out.println("Pv perdu"+impact+"💔");
+        }
+        int updatedHealth = character.getPv() + impact;
+        character.setPv(Math.max(0, updatedHealth));
         return updatedHealth > 0;
     }
+
+    public List<Character> loadMonsters() throws IOException {
+        List<Character> monsters = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(MONSTER_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(", ");
+                if (parts.length == 3) {
+                    String name = parts[0];
+                    int pv = Integer.parseInt(parts[1]);
+                    int force = Integer.parseInt(parts[2]);
+                    monsters.add(new Character(name, pv, force));
+                }
+            }
+        }
+
+        return monsters;
+    }
+
 }
